@@ -1277,10 +1277,11 @@ contract Function_approveTokenizationSpoke is PoolExposureStewardTest {
     steward.approveTokenizationSpoke(address(UNAPPROVED_SPOKE));
   }
 
-  /// @dev An address that is not a spoke at all, e.g. a V3 Pool pasted by mistake
+  /// @dev An address that is not a spoke at all, e.g. a V3 Pool pasted by mistake.
+  /// The Pool has no `hub()`, so the call fails with empty revert data and there is no error selector to match
   function test_revertsIf_notATokenizationSpoke() public {
     vm.prank(GovernanceV3Ethereum.EXECUTOR_LVL_1);
-    vm.expectRevert();
+    vm.expectRevert(bytes(""));
     steward.approveTokenizationSpoke(address(AaveV3Ethereum.POOL));
   }
 
